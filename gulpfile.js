@@ -2,7 +2,6 @@
 
 var gulp = require('gulp');
 var mocha = require('gulp-mocha');
-var istanbul = require('gulp-istanbul');
 var bump = require('gulp-bump');
 var git = require('gulp-git');
 var filter = require('gulp-filter');
@@ -11,16 +10,9 @@ var stylish = require('jshint-stylish');
 var tag = require('gulp-tag-version');
 var spawn = require('child_process').spawn;
 
-gulp.task('test', function (done) {
-    gulp.src(['lib/**/*'])
-        .pipe(istanbul())
-        .pipe(istanbul.hookRequire())
-        .on('finish', function () {
-            gulp.src(['test/*.js'])
-                .pipe(mocha())
-                .pipe(istanbul.writeReports())
-                .on('end', done)
-        });
+gulp.task('test', function() {
+    return gulp.src(['test/*.js'])
+        .pipe(mocha({ exit: true }));
 });
 
 function inc(importance) {
@@ -42,8 +34,8 @@ function inc(importance) {
         .pipe(tag())
 }
 
-gulp.task('publish', function (done) {
-    spawn('npm', ['publish'], { stdio: 'inherit' }).on('close', done);
+gulp.task('publish', function () {
+    return spawn('npm', ['publish'], { stdio: 'inherit' });
 });
 
 gulp.task('patch', function () {
@@ -64,10 +56,10 @@ gulp.task('lint', function () {
         .pipe(jshint.reporter(stylish));
 });
 
-gulp.task('push', function (done) {
-    git.push('origin', 'master', {args: '--tags'}, done);
+gulp.task('push', function () {
+    return git.push('origin', 'master', {args: '--tags'}, );
 });
 
-gulp.task('release', ['lint', 'test', 'patch']);
+gulp.task('release', gulp.series(['lint', 'test', 'patch']));
 
-gulp.task('default', ['lint', 'test']);
+gulp.task('default', gulp.series(['lint', 'test']));
