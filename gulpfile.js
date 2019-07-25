@@ -2,7 +2,6 @@
 
 var gulp = require('gulp');
 var mocha = require('gulp-mocha');
-var istanbul = require('gulp-istanbul');
 var bump = require('gulp-bump');
 var git = require('gulp-git');
 var filter = require('gulp-filter');
@@ -12,15 +11,9 @@ var tag = require('gulp-tag-version');
 var spawn = require('child_process').spawn;
 
 gulp.task('test', function (done) {
-    gulp.src(['lib/**/*'])
-        .pipe(istanbul())
-        .pipe(istanbul.hookRequire())
-        .on('finish', function () {
-            gulp.src(['test/*.js'])
-                .pipe(mocha())
-                .pipe(istanbul.writeReports())
-                .on('end', done)
-        });
+    gulp.src(['test/*.js'])
+        .pipe(mocha({ exit: true }))
+        .on('end', done);
 });
 
 function inc(importance) {

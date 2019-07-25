@@ -85,7 +85,7 @@ describe('Halacious Plugin', function () {
             plugin.namespaces.add.bind(plugin.namespaces, {
                 name: 'mycompany',
                 prefirx: 'mco'
-            }).should.throw('prefirx is not allowed');
+            }).should.throw('"prefirx" is not allowed');
         });
     });
 
@@ -153,7 +153,7 @@ describe('Halacious Plugin', function () {
             plugin.rels.add('thiscompany', { name: 'b_rel' });
             rels = _.values(plugin.namespace('thiscompany').rels);
             rels.should.have.length(2);
-            _.pluck(rels, 'name').should.deep.equal(['a_rel', 'b_rel']);
+            _.map(rels, 'name').should.deep.equal(['a_rel', 'b_rel']);
             done();
         });
     });
@@ -167,7 +167,7 @@ describe('Halacious Plugin', function () {
             plugin.namespaces.add({ name: 'yourcompany', prefix: 'yco' }).rel('b_rel').rel('d_rel');
             rels = plugin.rels();
             rels.should.have.length(4);
-            _.pluck(rels, 'name').should.deep.equal(['a_rel', 'b_rel', 'c_rel', 'd_rel']);
+            _.map(rels, 'name').should.deep.equal(['a_rel', 'b_rel', 'c_rel', 'd_rel']);
             done();
         });
     });

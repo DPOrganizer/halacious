@@ -2,7 +2,7 @@
 
 var hapi = require('hapi');
 var URI = require('URIjs');
-var hoek = require('hoek');
+var hoek = require('@hapi/hoek');
 var halacious = require('../');
 var users = [];
 
